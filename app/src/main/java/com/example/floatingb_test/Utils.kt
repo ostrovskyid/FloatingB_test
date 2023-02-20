@@ -1,5 +1,6 @@
 package com.example.floatingb_test
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
@@ -12,6 +13,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 
+
+private val scaleDuration = 150L
 
 fun View.showSnackbar(
     msg: String,
@@ -69,4 +72,22 @@ object GetDisplayMetrics {
             return Size(metrics.bounds.width(), metrics.bounds.height())
         }
     }
+}
+
+fun View.scaleWithAnim() {
+    val scaleDownX = ObjectAnimator.ofFloat(this, "scaleX", 1.1f)
+    val scaleDownY = ObjectAnimator.ofFloat(this, "scaleY", 1.1f)
+    scaleDownX.duration = scaleDuration
+    scaleDownY.duration = scaleDuration
+    scaleDownX.start()
+    scaleDownY.start()
+}
+
+fun View.unscaleWithAnim() {
+    val scaleDownX = ObjectAnimator.ofFloat(this, "scaleX", 1.0f)
+    val scaleDownY = ObjectAnimator.ofFloat(this, "scaleY", 1.0f)
+    scaleDownX.duration = scaleDuration
+    scaleDownY.duration = scaleDuration
+    scaleDownX.start()
+    scaleDownY.start()
 }

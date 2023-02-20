@@ -217,6 +217,7 @@ class BubbleService : Service() {
                 gestureDetector.onTouchEvent(event)
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        bubbleView.scaleWithAnim()
                         windowManager.updateViewLayout(bubbleView, bubbleLayoutParams)
                         initialX = bubbleLayoutParams.x
                         initialY = bubbleLayoutParams.y
@@ -233,6 +234,7 @@ class BubbleService : Service() {
                     }
 
                     MotionEvent.ACTION_UP -> {
+                        bubbleView.unscaleWithAnim()
                         swipesMap.keys.forEach {
                             if (swipesMap[it] == true) stickToEdge(it)
                         }
@@ -241,7 +243,6 @@ class BubbleService : Service() {
                 return false
             }
         })
-
     }
 
     fun stickToEdge(direction: SwipeDirections) {
