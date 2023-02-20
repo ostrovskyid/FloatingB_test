@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/bubble_size_dp"
+    android:animateLayoutChanges="true"
+    android:layout_height="@dimen/bubble_size_dp"
+    android:elevation="@dimen/bubble_elevation" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dta_logo_round"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no" />
+
+</FrameLayout>
