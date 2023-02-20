@@ -48,11 +48,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    override fun onStop() {
-        super.onStop()
-        checkPermissionThenStart()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
