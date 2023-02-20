@@ -3,4 +3,7 @@
     <dimen name="bubble_size_dp">70dp</dimen>
     <dimen name="bubble_size_px">70px</dimen>
     <dimen name="bubble_elevation">10dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_24sp">24sp</dimen>
 </resources>

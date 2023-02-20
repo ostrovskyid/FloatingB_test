@@ -19,6 +19,35 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="0dp"
+            android:gravity="start|top"
+            android:layout_marginHorizontal="@dimen/_32dp"
+            android:textSize="18sp"
+            android:layout_marginVertical="@dimen/_16dp"
+            android:text="@string/description_of_service"
+            app:layout_constraintBottom_toTopOf="@id/cb_run_minimized"/>
+
+        <CheckBox
+            android:id="@+id/cb_run_minimized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_32dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/run_bubble_service_on_minimizing_app"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/stopFab"

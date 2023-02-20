@@ -12,4 +12,8 @@
     <string name="settings">Settings</string>
     <string name="overlay_permission_not_granted">Overlay permission not granted</string>
     <string name="stop">Stop</string>
+    <string name="all_permissions_granted">all_permissions_granted</string>
+    <string name="run_bubble_service_on_minimizing_app">Run bubble service when minimized</string>
+    <string name="checkbox_run_minimized_checked">checkbox_run_minimized_checked</string>
+    <string name="description_of_service">\tThis app can launch a floating bubble service.\n\tWhen the service is active, a user sees a notification with the ability to open an app or stop the service. \n\tThe bubble supports drag and drop, sticking to the edges. \n\tAlso can listen for different click events, like click, double click, and long press. \nThese events call open the app, go home, stop the service in accordance.</string>
 </resources>

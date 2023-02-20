@@ -1,12 +1,16 @@
 package com.example.floatingb_test
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
+import android.widget.CheckBox
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -18,35 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            checkPermissionThenStart()
-        } else {
-            binding.root.showSnackbar(
-                getString(R.string.notification_blocked),
-                actionMessage = getString(R.string.settings)
-            ) { openSettings() }
-        }
-    }
-
-    private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (Settings.canDrawOverlays(this)) {
-                controlService()
-            } else {
-                binding.root.showSnackbar(
-                    getString(R.string.overlay_permission_not_granted),
-                    actionMessage = getString(R.string.settings)
-                ) { launchOverlayPermissionScreen() }
-            }
-
-        }
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -56,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+
+        preferences = getPreferences(Context.MODE_PRIVATE) ?: return
 
         binding.startFab.setOnClickListener {
             when {
@@ -84,6 +62,78 @@ class MainActivity : AppCompatActivity() {
 
         binding.stopFab.setOnClickListener {
             controlService(stopService = true)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (preferences.getBoolean(getString(R.string.all_permissions_granted), false)) {
+            binding.cbRunMinimized.visibility = View.VISIBLE
+            binding.cbRunMinimized.isChecked =
+                preferences.getBoolean(getString(R.string.checkbox_run_minimized_checked), false)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (preferences.getBoolean(
+                getString(R.string.all_permissions_granted),
+                false
+            ) && preferences.getBoolean(getString(R.string.checkbox_run_minimized_checked), false)
+        ) {
+            controlService()
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            checkPermissionThenStart()
+        } else {
+            binding.root.showSnackbar(
+                getString(R.string.notification_blocked),
+                actionMessage = getString(R.string.settings)
+            ) { openSettings() }
+        }
+    }
+
+    private val getResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (Settings.canDrawOverlays(this)) {
+                with(preferences.edit()) {
+                    putBoolean(getString(R.string.all_permissions_granted), true)
+                    apply()
+                }
+                controlService()
+            } else {
+                binding.root.showSnackbar(
+                    getString(R.string.overlay_permission_not_granted),
+                    actionMessage = getString(R.string.settings)
+                ) { launchOverlayPermissionScreen() }
+            }
+
+        }
+
+    fun onCheckboxClicked(view: View) {
+        if (view is CheckBox) {
+            val checked: Boolean = view.isChecked
+
+            if (view.id == R.id.cb_run_minimized) {
+                if (checked) {
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.checkbox_run_minimized_checked), true)
+                        apply()
+                    }
+                } else {
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.checkbox_run_minimized_checked), false)
+                        apply()
+                    }
+                }
+            }
         }
     }
 
